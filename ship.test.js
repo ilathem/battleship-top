@@ -21,7 +21,8 @@ test('hit function', () => {
 
 test('is sunk', () => {
   const ship = new Ship(2);
+  expect(ship.isSunk()).toBeFalsy();
   ship.hit();
   ship.hit();
-  expect(ship.sunk()).toBeFalsy();
+  expect(ship.isSunk()).toBeTruthy();
 });
