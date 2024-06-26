@@ -20,5 +20,5 @@ test('Ship placement happy case', () => {
 })
 
 test('Diagonal coordinates throws', () => {
-  expect(() => new Gameboard(0, 0, 1, 3)).toThrow('No diagonal ships');
+  expect(() => new Gameboard().placeShip(0, 0, 1, 3)).toThrow('No diagonal ships');
 })
