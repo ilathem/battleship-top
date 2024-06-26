@@ -1,7 +1,7 @@
 const Gameboard = require('./gameboard');
 
 test('Gameboard creation', () => {
-  const testboard = new Array(10).fill(new Array(10).fill('?'));
+  const testboard = Array.from(Array(10), () => new Array(10));
   const testGameboard = {
     board: testboard
   }
