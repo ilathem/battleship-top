@@ -11,23 +11,17 @@ class Gameboard {
     let orientation = undefined;
     if (startY === endY) orientation = 'horizontal';
     if (startX === endX) orientation = 'vertical';
-    let length = undefined;
-    if (orientation === 'horizontal') {
-      length = Math.abs(startX - endX) + 1;
-      if (startX === 0 || endX === 0) length--;
-    } else if (orientation === 'vertical') {
-      length = Math.abs(startY - endY) + 1;
-      if (startY === 0 || endY === 0) length--;
-    }
     let constantCoord = orientation === 'horizontal' ? startY : startX;
     if (orientation === 'horizontal') {
       const beginningX = Math.min(startX, endX)
-      for (let i = beginningX; i <= beginningX + length; i++) {
+      const endingX = Math.max(startX, endX)
+      for (let i = beginningX; i <= endingX; i++) {
         this.board[i][constantCoord] = 'S';
       }
     } else if (orientation === 'vertical') {
       const beginningY = Math.min(startY, endY)
-      for (let i = beginningY; i <= beginningY + length; i++) {
+      const endingY = Math.max(startY, endY)
+      for (let i = beginningY; i <= endingY; i++) {
         this.board[constantCoord][i] = 'S';
       }
     }
