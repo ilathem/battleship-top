@@ -39,6 +39,11 @@ test('Reverse coordinates work with ship placements', () => {
   testboard[0][2] = 'S';
   testboard[0][3] = 'S';
   board.placeShip(0, 3, 0, 0);
+  testboard[1][1] = 'S';
+  testboard[2][1] = 'S';
+  testboard[3][1] = 'S';
+  testboard[4][1] = 'S';
+  board.placeShip(4, 1, 1, 1);
   expect(board.board).toEqual(testboard);
 })
 
