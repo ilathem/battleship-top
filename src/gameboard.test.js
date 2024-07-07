@@ -78,3 +78,11 @@ test('Same coordinate hits only hit ship once', () => {
   board.receiveAttack(0, 2);
   expect(testShip.hitCount).toEqual(1);
 })
+
+test('Misses receive coordinates', () => {
+  const board = new Gameboard();
+  const testShip = board.placeShip(0, 3, 0, 0);
+  const attack = board.receiveAttack(0, 7);
+  expect(attack).toEqual([0, 7]);
+  expect(testShip.hitCount).toEqual(0);
+})
