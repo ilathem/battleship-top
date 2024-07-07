@@ -13,22 +13,26 @@ class Gameboard {
     if (startX === endX) orientation = 'vertical';
     let constantCoord = orientation === 'horizontal' ? startY : startX;
     let length = 0;
+    let newShip;
     if (orientation === 'horizontal') {
       const beginningX = Math.min(startX, endX)
       const endingX = Math.max(startX, endX)
       length = endingX - beginningX;
+      newShip = new Ship(length);
       for (let i = beginningX; i <= endingX; i++) {
-        this.board[i][constantCoord] = 'S';
+        this.board[i][constantCoord] = newShip.id;
       }
     } else if (orientation === 'vertical') {
       const beginningY = Math.min(startY, endY)
       const endingY = Math.max(startY, endY)
       length = endingY - beginningY;
+      newShip = new Ship(length);
       for (let i = beginningY; i <= endingY; i++) {
-        this.board[constantCoord][i] = 'S';
+        this.board[constantCoord][i] = newShip.id;
       }
     }
-    return new Ship(length)
+    this.ships = { ...this.ships, [newShip.id]: newShip }
+    return newShip;
   }
 }
 
