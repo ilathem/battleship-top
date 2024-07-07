@@ -50,3 +50,11 @@ test('Reverse coordinates work with ship placements', () => {
 test('Diagonal coordinates throws', () => {
   expect(() => new Gameboard().placeShip(0, 0, 1, 3)).toThrow('No diagonal ships');
 })
+
+test('Receive attack', () => {
+  let testboard = Array.from(Array(10), () => new Array(10));
+  const board = new Gameboard();
+  const testShip = board.placeShip(0, 3, 0, 0);
+  const testAttack = board.receiveAttack(0, 2);
+  expect(testShip.hitCount).toEqual(1);
+})
