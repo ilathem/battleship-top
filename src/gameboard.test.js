@@ -64,9 +64,17 @@ test('Diagonal coordinates throws', () => {
 })
 
 test('Receive attack', () => {
-  let testboard = Array.from(Array(10), () => new Array(10));
   const board = new Gameboard();
   const testShip = board.placeShip(0, 3, 0, 0);
   const testAttack = board.receiveAttack(0, 2);
+  expect(testShip.hitCount).toEqual(1);
+  expect(testAttack).toEqual('Hit!')
+})
+
+test('Same coordinate hits only hit ship once', () => {
+  const board = new Gameboard();
+  const testShip = board.placeShip(0, 3, 0, 0);
+  board.receiveAttack(0, 2);
+  board.receiveAttack(0, 2);
   expect(testShip.hitCount).toEqual(1);
 })
