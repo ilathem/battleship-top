@@ -39,6 +39,7 @@ class Gameboard {
     const destination = this.board[x][y];
     if (destination) {
       this.ships[destination].hit();
+      this.board[x][y] = null;
       return 'Hit!'
     }
     return [x, y];
