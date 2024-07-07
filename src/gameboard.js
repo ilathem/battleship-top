@@ -34,6 +34,15 @@ class Gameboard {
     this.ships = { ...this.ships, [newShip.id]: newShip }
     return newShip;
   }
+
+  receiveAttack(x, y) {
+    const destination = this.board[x][y];
+    if (destination) {
+      this.ships[destination].hit();
+      return 'Hit!'
+    }
+    return [x, y];
+  }
 }
 
 module.exports = Gameboard;

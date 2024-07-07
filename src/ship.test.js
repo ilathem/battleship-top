@@ -6,17 +6,14 @@ test('ship creation', () => {
     hitCount: 0,
   };
   const ship = new Ship(2);
-  expect(testShip).toEqual(ship);
+  expect(ship.length).toEqual(testShip.length);
+  expect(ship.hitCount).toEqual(testShip.hitCount);
 });
 
 test('hit function', () => {
-  const testShip = {
-    length: 2,
-    hitCount: 1,
-  };
   const ship = new Ship(2);
   ship.hit();
-  expect(testShip).toEqual(ship);
+  expect(ship.hitCount).toEqual(1);
 });
 
 test('is sunk', () => {
