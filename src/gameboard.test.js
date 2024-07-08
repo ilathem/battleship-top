@@ -93,3 +93,19 @@ test('Gameboard should keep track of missed attacks to display properly', () => 
     [0, 7]
   ]);
 })
+
+test('Report if all ships are sunk', () => {
+  const board = new Gameboard();
+  board.placeShip(0, 0, 0, 3);
+  board.placeShip(1, 0, 1, 2);
+  expect(board.allSunk).toEqual(false);
+  board.receiveAttack(0, 0);
+  board.receiveAttack(0, 1);
+  board.receiveAttack(0, 2);
+  board.receiveAttack(0, 3);
+  board.receiveAttack(1, 0);
+  board.receiveAttack(1, 1);
+  board.receiveAttack(1, 2);
+  expect(board.allSunk).toEqual(true);
+})
+
