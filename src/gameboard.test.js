@@ -1,5 +1,3 @@
-const Gameboard = require('./gameboard');
-
 test('Gameboard creation', () => {
   const testboard = Array.from(Array(10), () => new Array(10));
   const testGameboard = {
@@ -85,4 +83,13 @@ test('Misses receive coordinates', () => {
   const attack = board.receiveAttack(0, 7);
   expect(attack).toEqual([0, 7]);
   expect(testShip.hitCount).toEqual(0);
+})
+
+test('Gameboard should keep track of missed attacks to display properly', () => {
+  const board = new Gameboard();
+  board.placeShip(0, 3, 0, 0);
+  board.receiveAttack(0, 7);
+  expect(board.missedAttacks).toEqual([
+    [0, 7]
+  ]);
 })
