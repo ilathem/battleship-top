@@ -87,6 +87,7 @@ test('Misses receive coordinates', () => {
 test('Gameboard should keep track of missed attacks to display properly', () => {
   const board = new Gameboard();
   board.placeShip(0, 3, 0, 0);
+  expect(board.missedAttacks).toEqual([]);
   board.receiveAttack(0, 7);
   expect(board.missedAttacks).toEqual([
     [0, 7]
