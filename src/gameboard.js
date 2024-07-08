@@ -3,6 +3,7 @@ const Ship = require('./ship');
 class Gameboard {
   constructor() {
     this.board = Array.from(Array(10), () => new Array(10));
+    this.missedAttacks = [];
   }
 
   placeShip(startX, startY, endX, endY) {
@@ -42,6 +43,7 @@ class Gameboard {
       this.board[x][y] = null;
       return 'Hit!'
     }
+    this.missedAttacks.push([x, y]);
     return [x, y];
   }
 }
