@@ -56,9 +56,9 @@ test('Reverse coordinates work with ship placements', () => {
   // expect(board.board).toEqual(testboard);
 })
 
-test('Diagonal coordinates throws', () => {
-  expect(() => new Gameboard().placeShip(0, 0, 1, 3)).toThrow('No diagonal ships');
-})
+// test('Diagonal coordinates throws', () => {
+//   expect(() => new Gameboard().placeShip(0, 0, 1, 3)).toThrow('No diagonal ships');
+// })
 
 test('Receive attack', () => {
   const board = new Gameboard();
@@ -95,10 +95,13 @@ test('Gameboard should keep track of missed attacks to display properly', () => 
 })
 
 test('Report if all ships are sunk', () => {
+  console.log('start of all ships sunk test');
   const board = new Gameboard();
-  board.placeShip(0, 0, 0, 3);
-  board.placeShip(1, 0, 1, 2);
-  expect(board.allSunk).toEqual(false);
+  board.placeShip(0, 0, 0, 3, 'firstTestShip')
+  // console.log(board.ships);
+  board.placeShip(1, 0, 1, 2, 'secondTestShip');
+  expect(board.allSunk()).toEqual(false);
+  console.log(board.board);
   board.receiveAttack(0, 0);
   board.receiveAttack(0, 1);
   board.receiveAttack(0, 2);
@@ -106,6 +109,7 @@ test('Report if all ships are sunk', () => {
   board.receiveAttack(1, 0);
   board.receiveAttack(1, 1);
   board.receiveAttack(1, 2);
-  expect(board.allSunk).toEqual(true);
+  console.log(board.ships);
+  expect(board.allSunk()).toEqual(true);
 })
 

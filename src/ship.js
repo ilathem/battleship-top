@@ -1,8 +1,9 @@
 class Ship {
-  constructor(length) {
+  constructor(length, shipId = null) {
     this.length = length;
     this.hitCount = 0;
-    this.id = Date.now();
+    if (shipId) this.id = shipId;
+    else this.id = Date.now();
   }
 
   hit() {
