@@ -1,4 +1,4 @@
-import Gameboard from ('./gameboard');
+const Gameboard = require('./gameboard');
 
 class Player {
   constructor(type) {
@@ -6,3 +6,5 @@ class Player {
     this.board = new Gameboard();
   }
 }
+
+module.exports = Player;
