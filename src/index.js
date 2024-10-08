@@ -1,4 +1,5 @@
 const { createTemplateGame } = require("./driver.js");
+import './index.css';
 
 // TODO: make a method to render the player gameboard onto the screen
 

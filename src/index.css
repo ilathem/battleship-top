@@ -2,3 +2,30 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+body {
+  height: 100vh;
+  background-color: black;
+  color: white;
+}
+
+table {
+  border: 1px solid green;
+  height: 100%;
+  margin: auto;
+  border-spacing: 10px;
+}
+ 
+td {
+  border: 2px solid gray; 
+  min-width: 100px;
+  text-align: center;
+  user-select: none;
+  transition: all 200ms;
+}
+
+td:hover {
+  cursor: pointer;
+  border: 2px solid lightskyblue;
+  scale: 1.1;
+}
