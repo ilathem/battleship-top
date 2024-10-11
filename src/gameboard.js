@@ -40,14 +40,15 @@ class Gameboard {
 
   receiveAttack(x, y) {
     const destination = this.board[x][y];
-    if (destination) {
+    if (destination && destination !== 'X') {
       this.ships[destination].hit();
-      this.board[x][y] = null;
+      this.board[x][y] = 'X';
       console.log(`attack (${x}, ${y}): ${destination} hit (length is ${this.ships[destination].length}), total hit count is ${this.ships[destination].hitCount}`);
       return 'Hit!'
     }
+    this.board[x][y] = 'O';
     this.missedAttacks.push([x, y]);
-    return [x, y];
+    return 'Miss!';
   }
 
   allSunk() {

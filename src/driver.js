@@ -21,4 +21,36 @@ function createTemplateGame() {
   return { player1, player2 }
 }
 
-module.exports = { createTemplateGame } 
+function renderGameBoard(container, player) {
+  console.log(player.board);
+  const htmlTable = [];
+  const table = document.createElement("table");
+  for (let i = 0; i < player.board.board.length; i++) {
+    const row = document.createElement("tr");
+    htmlTable[i] = new Array(player.board.board[i].length);
+    for (let j = 0; j < player.board.board[i].length; j++) {
+      const tableData = document.createElement("td");
+      let displayText = player.board.board[i][j] || '-';
+      if (displayText != 'X' || displayText != 'O') displayText = '-';
+      tableData.innerText = displayText;
+      htmlTable[i][j] = tableData;
+      tableData.addEventListener('click', () => {
+        if (['X', 'O'].includes(player.board.board[i][j])) {
+          console.log('this has already been attacked');
+          return;
+        }
+        console.log(`attack on ${i}, ${j}`)
+        console.log(player.board.board[i][j] || 'just empty water')
+        const result = player.board.receiveAttack(i, j);
+        console.log(result);
+        tableData.innerText = player.board.board[i][j];
+      })
+      row.appendChild(tableData);
+    }
+    table.appendChild(row);
+  }
+  container.appendChild(table);
+  return htmlTable;
+}
+
+module.exports = { createTemplateGame, renderGameBoard } 

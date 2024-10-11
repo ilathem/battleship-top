@@ -7,10 +7,23 @@ body {
   height: 100vh;
   background-color: black;
   color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  width: 100%;
+  text-align: center;
+  padding: .5em;
+  font-size: 2em;
+}
+
+.boardDiv {
+  flex: 1;
 }
 
 table {
-  border: 1px solid green;
+  border: 0px solid green;
   height: 100%;
   margin: auto;
   border-spacing: 10px;
