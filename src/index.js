@@ -5,8 +5,27 @@ const body = document.querySelector('body');
 const boardDiv = document.createElement('div');
 const msg = document.createElement('p');
 msg.classList.add('message');
-msg.innerText = 'Player 1 Turn';
+let sampleArray = ['a', 'b', 'c']
+let sampleIndex = 0;
+msg.addEventListener('click', () => {
+    sampleIndex = (sampleIndex + 1) % sampleArray.length;
+    console.log(sampleIndex)
+})
 boardDiv.classList.add('boardDiv');
 body.appendChild(msg);
 body.appendChild(boardDiv);
-const player1Table = renderGameBoard(boardDiv, player1);
+const players = [player1, player2];
+let currentPlayerIndex = -1;
+function triggerNextTurn() {
+    console.log('triggering turn')
+    boardDiv.innerHTML = '';
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    msg.innerText = `Player ${currentPlayerIndex + 1} Turn`;
+    if (players[currentPlayerIndex].board.allSunk()) {
+        showEndGameScreen();
+    } else {
+        console.log(`current player is ${currentPlayerIndex}`)
+        renderGameBoard(boardDiv, players[currentPlayerIndex], triggerNextTurn, msg)
+    }   
+}
+triggerNextTurn()

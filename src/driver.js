@@ -21,7 +21,7 @@ function createTemplateGame() {
   return { player1, player2 }
 }
 
-function renderGameBoard(container, player) {
+function renderGameBoard(container, player, triggerNextTurn, msg) {
   console.log(player.board);
   const htmlTable = [];
   const table = document.createElement("table");
@@ -31,7 +31,8 @@ function renderGameBoard(container, player) {
     for (let j = 0; j < player.board.board[i].length; j++) {
       const tableData = document.createElement("td");
       let displayText = player.board.board[i][j] || '-';
-      if (displayText != 'X' || displayText != 'O') displayText = '-';
+      if (['X', 'O'].includes(player.board.board[i][j])) displayText = player.board.board[i][j];
+      else displayText = '-'
       tableData.innerText = displayText;
       htmlTable[i][j] = tableData;
       tableData.addEventListener('click', () => {
@@ -44,6 +45,8 @@ function renderGameBoard(container, player) {
         const result = player.board.receiveAttack(i, j);
         console.log(result);
         tableData.innerText = player.board.board[i][j];
+        msg.innerText = result;
+        setTimeout(triggerNextTurn, 3000)
       })
       row.appendChild(tableData);
     }
