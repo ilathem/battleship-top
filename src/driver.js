@@ -22,7 +22,7 @@ function createTemplateGame() {
 }
 
 function renderGameBoard(container, player, triggerNextTurn, msg) {
-  console.log(player.board);
+  // console.log(player.board);
   const htmlTable = [];
   const table = document.createElement("table");
   for (let i = 0; i < player.board.board.length; i++) {
@@ -31,22 +31,22 @@ function renderGameBoard(container, player, triggerNextTurn, msg) {
     for (let j = 0; j < player.board.board[i].length; j++) {
       const tableData = document.createElement("td");
       let displayText = player.board.board[i][j] || '-';
-      if (['X', 'O'].includes(player.board.board[i][j])) displayText = player.board.board[i][j];
-      else displayText = '-'
+      // if (['X', 'O'].includes(player.board.board[i][j])) displayText = player.board.board[i][j];
+      // else displayText = '-'
       tableData.innerText = displayText;
       htmlTable[i][j] = tableData;
       tableData.addEventListener('click', () => {
         if (['X', 'O'].includes(player.board.board[i][j])) {
-          console.log('this has already been attacked');
+          // console.log('this has already been attacked');
           return;
         }
-        console.log(`attack on ${i}, ${j}`)
-        console.log(player.board.board[i][j] || 'just empty water')
+        // console.log(`attack on ${i}, ${j}`)
+        // console.log(player.board.board[i][j] || 'just empty water')
         const result = player.board.receiveAttack(i, j);
-        console.log(result);
+        // console.log(result);
         tableData.innerText = player.board.board[i][j];
         msg.innerText = result;
-        setTimeout(triggerNextTurn, 3000)
+        setTimeout(triggerNextTurn, 100)
       })
       row.appendChild(tableData);
     }

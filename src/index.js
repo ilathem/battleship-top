@@ -1,6 +1,6 @@
 const { createTemplateGame, renderGameBoard } = require("./driver.js");
 import './index.css';
-const {player1, player2} = createTemplateGame();
+const { player1, player2 } = createTemplateGame();
 const body = document.querySelector('body');
 const boardDiv = document.createElement('div');
 const msg = document.createElement('p');
@@ -14,18 +14,38 @@ msg.addEventListener('click', () => {
 boardDiv.classList.add('boardDiv');
 body.appendChild(msg);
 body.appendChild(boardDiv);
+
 const players = [player1, player2];
-let currentPlayerIndex = -1;
-function triggerNextTurn() {
-    console.log('triggering turn')
+let currentPlayerIndex = 0;
+let currentBoardIndex = 1;
+
+function showEndGameScreen() {
     boardDiv.innerHTML = '';
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-    msg.innerText = `Player ${currentPlayerIndex + 1} Turn`;
-    if (players[currentPlayerIndex].board.allSunk()) {
-        showEndGameScreen();
-    } else {
-        console.log(`current player is ${currentPlayerIndex}`)
-        renderGameBoard(boardDiv, players[currentPlayerIndex], triggerNextTurn, msg)
-    }   
+
+    msg.innerText = `Player ${currentPlayerIndex + 1} Wins!`
 }
-triggerNextTurn()
+
+function triggerNextTurn(firstTurn) {
+    console.log(`calling triggerNextTurn from player ${currentPlayerIndex}, board ${currentBoardIndex}`)
+    console.log(players[currentBoardIndex].board.allSunk())
+    if (players[currentBoardIndex].board.allSunk()) {
+        console.log(`all ships sunk for board ${currentBoardIndex}, player ${currentPlayerIndex} should win`)
+
+        showEndGameScreen();
+
+    } else {
+        boardDiv.innerHTML = '';
+
+        if (!firstTurn) {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            currentBoardIndex = (currentBoardIndex + 1) % players.length;
+        }
+
+        msg.innerText = `Player ${currentPlayerIndex + 1} Turn`;
+
+        console.log(`triggering board for player ${currentPlayerIndex}, board ${currentBoardIndex}`)
+        renderGameBoard(boardDiv, players[currentBoardIndex], triggerNextTurn, msg)
+    }
+
+}
+triggerNextTurn(true)
