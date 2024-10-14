@@ -48,4 +48,12 @@ function triggerNextTurn(firstTurn) {
     }
 
 }
-triggerNextTurn(true)
+
+function placePlayerOneShips() {
+    msg.innerText = `Player 1, place your ships...`
+    renderPregameBoard(boardDiv, players[0], placePlayerTwoShips);
+}
+
+function placePlayerTwoShips() {
+    msg.innerText = 'Player 2, place your ships...';
+}
