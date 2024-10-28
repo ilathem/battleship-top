@@ -1,4 +1,4 @@
-const { createTemplateGame, renderGameBoard } = require("./driver.js");
+const { createTemplateGame, renderGameBoard, renderPregameBoard } = require("./driver.js");
 import './index.css';
 const { player1, player2 } = createTemplateGame();
 const body = document.querySelector('body');
@@ -60,14 +60,22 @@ function showTitleScreen() {
     const playerGameBtn = document.createElement('button');
     playerGameBtn.innerText = 'Player';
     playerGameBtn.classList.add('selectionBtn');
+    playerGameBtn.addEventListener('mouseup', () => {
+        startPlayerPreGame();
+    })
     boardDiv.appendChild(selectionText);
     boardDiv.appendChild(computerGameBtn);
     boardDiv.appendChild(playerGameBtn);
 }
 
+function startPlayerPreGame() {
+    boardDiv.innerHTML = '';
+    placePlayerOneShips();
+}
+
 function placePlayerOneShips() {
     msg.innerText = `Player 1, place your ships...`
-    renderPregameBoard(boardDiv, players[0], placePlayerTwoShips);
+    renderPregameBoard(boardDiv, players[0]);
 }
 
 function placePlayerTwoShips() {

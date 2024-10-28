@@ -47,6 +47,7 @@ td:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  user-select: none;
 }
 
 .selectionText {
@@ -74,4 +75,48 @@ td:hover {
 
 .selectionBtn:active {
   scale: 1.1;
+}
+
+.renderShipsDiv {
+  font-size: 1.25em;
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+}
+
+.shipsToChooseDiv {
+  display: flex;
+  margin-top: 1em;
+}
+
+.shipBtn {
+  margin: 0 1em;
+  padding: .5em 1em;
+  border: 2px solid white;
+  transition: all 100ms;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.shipBtn:hover {
+  color: #00B4EA;
+  transform: translateY(-2px);
+}
+
+.shipBtn:active {
+  transform: translateY(5px);
+}
+
+.shipLocationInput {
+  color: white;
+  min-width: 280px;
+  border: 2px solid white;
+  background-color: black;
+  padding: .5em 1em;
+  margin-top: 1em;
+  font-size: 1.125rem;
+  border-radius: 10px;
+  outline: none;
 }
