@@ -42,3 +42,36 @@ td:hover {
   border: 2px solid lightskyblue;
   scale: 1.1;
 }
+
+.boardDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selectionText {
+  font-size: 1.5em;
+  margin-bottom: .5em;
+}
+
+.selectionBtn {
+  font-size: 1.5em;
+  margin: 1em auto;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  padding: .5em 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 250ms;
+}
+
+.selectionBtn:hover {
+  border: 2px solid #00B4EA;
+  color: #00B4EA;
+  scale: 1.2;
+}
+
+.selectionBtn:active {
+  scale: 1.1;
+}

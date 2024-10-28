@@ -49,6 +49,22 @@ function triggerNextTurn(firstTurn) {
 
 }
 
+function showTitleScreen() {
+    msg.innerText = 'Battleship';
+    const selectionText = document.createElement('p');
+    selectionText.classList.add('selectionText');
+    selectionText.innerText = 'Playing against player or computer?';
+    const computerGameBtn = document.createElement('button');
+    computerGameBtn.innerText = 'Computer';
+    computerGameBtn.classList.add('selectionBtn');
+    const playerGameBtn = document.createElement('button');
+    playerGameBtn.innerText = 'Player';
+    playerGameBtn.classList.add('selectionBtn');
+    boardDiv.appendChild(selectionText);
+    boardDiv.appendChild(computerGameBtn);
+    boardDiv.appendChild(playerGameBtn);
+}
+
 function placePlayerOneShips() {
     msg.innerText = `Player 1, place your ships...`
     renderPregameBoard(boardDiv, players[0], placePlayerTwoShips);
@@ -57,3 +73,5 @@ function placePlayerOneShips() {
 function placePlayerTwoShips() {
     msg.innerText = 'Player 2, place your ships...';
 }
+
+showTitleScreen();
