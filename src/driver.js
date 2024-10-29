@@ -69,6 +69,11 @@ function renderShips(player, activeShip) {
   input.type = 'number';
   input.placeholder = 'Tap or type starting square';
   input.disabled = true;
+  const inputDiv = document.createElement('div');
+  inputDiv.classList.add('inputDiv');
+  const rotateBtn = document.createElement('button');
+  rotateBtn.innerText = 'Rotate ship';
+  rotateBtn.classList.add('rotateBtn');
   const ships = [
     {
       name: 'Aircraft Carrier',
@@ -108,7 +113,9 @@ function renderShips(player, activeShip) {
   }
   div.appendChild(p);
   div.appendChild(shipsDiv);
-  div.appendChild(input);
+  inputDiv.appendChild(input);
+  inputDiv.appendChild(rotateBtn);
+  div.appendChild(inputDiv);
   return div;
 }
 
