@@ -57,11 +57,13 @@ function renderGameBoard(container, player, triggerNextTurn, msg) {
   return htmlTable;
 }
 
-function renderShips(player, activeShip) {
+function renderShips(player, activeShip, htmlTable) {
+  let direction = 'horizontal';
   const div = document.createElement('div');
   div.classList.add('renderShipsDiv');
   const p = document.createElement('p');
   p.innerText = 'Select which ship you would like to place';
+  p.classList.add('selectionText');
   const shipsDiv = document.createElement('div');
   shipsDiv.classList.add('shipsToChooseDiv');
   const input = document.createElement('input');
@@ -74,6 +76,10 @@ function renderShips(player, activeShip) {
   const rotateBtn = document.createElement('button');
   rotateBtn.innerText = 'Rotate ship';
   rotateBtn.classList.add('rotateBtn');
+  rotateBtn.addEventListener('click', () => {
+    if (direction === 'horizontal') direction = 'vertical';
+    else direction = 'horiztonal';
+  })
   const ships = [
     {
       name: 'Aircraft Carrier',
@@ -109,8 +115,28 @@ function renderShips(player, activeShip) {
       input.style.border = '2px solid #00B4EA';
       shipBtnDivs.forEach(btn => btn.style.border = '2px solid white')
       shipBtn.style.border = '2px solid #00B4EA';
+      rotateBtn.style.border = '2px solid #00B4EA';
     })
   }
+  input.addEventListener('keyup', e => {
+    if (e.target.value.toString().length < 2 ||
+        e.target.value.toString().length > 2 ||
+        e.target.value < 0 ||
+        e.target.value > 99 ||
+        e.target.value.toString().includes('-') ||
+        e.target.value.toString().includes('.')) return;
+    console.log(e.target.value)
+    console.log(activeShip);
+    const row = Number(e.target.value.toString()[0]);
+    const column = Number(e.target.value.toString()[1]);
+    const shipData = ships.find(ship => ship.name === activeShip);
+    console.table(row, column, shipData)
+    if (direction === 'horizontal') {
+      for (let i = 0; i < shipData.length; i++) {
+        htmlTable[row][column + i].innerText = '0'; 
+      }
+    }
+  })
   div.appendChild(p);
   div.appendChild(shipsDiv);
   inputDiv.appendChild(input);
@@ -138,7 +164,7 @@ function renderPregameBoard(container, player) {
     }
     table.appendChild(row);
   }
-  container.appendChild(renderShips(player, activeShip));
+  container.appendChild(renderShips(player, activeShip, htmlTable));
   container.appendChild(table);
   return htmlTable;
 }
