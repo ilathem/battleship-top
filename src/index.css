@@ -158,3 +158,12 @@ td:hover {
 .rotateBtn:active {
   transform: rotate(5deg);
 }
+
+.directionLabel {
+  margin-left: 1em;
+  margin-right: 0.25em;
+}
+
+.direction {
+  width: 120px;
+}

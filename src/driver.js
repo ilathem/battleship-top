@@ -79,8 +79,12 @@ const ships = [
   },
 ];
 
-function renderShips(player, activeShip, htmlTable) {
-  let direction = "horizontal";
+function renderShips(player, activeShip, htmlTable, direction) {
+  const directionLabel = document.createElement("p");
+  directionLabel.innerText = "Direction: ";
+  directionLabel.classList.add("directionLabel");
+  direction.innerText = "Left to right";
+  direction.classList.add("direction");
   const div = document.createElement("div");
   div.classList.add("renderShipsDiv");
   const p = document.createElement("p");
@@ -99,9 +103,11 @@ function renderShips(player, activeShip, htmlTable) {
   rotateBtn.innerText = "Rotate ship";
   rotateBtn.classList.add("rotateBtn");
   rotateBtn.addEventListener("click", () => {
-    if (direction === "horizontal") direction = "vertical";
-    else direction = "horiztonal";
+    if (direction.innerText === "Left to right")
+      direction.innerText = "Top to bottom";
+    else direction.innerText = "Left to right";
   });
+  direction.classList.add("direction");
   const shipBtnDivs = [];
   for (let i = 0; i < 5; i++) {
     const shipBtn = document.createElement("div");
@@ -145,11 +151,14 @@ function renderShips(player, activeShip, htmlTable) {
   div.appendChild(shipsDiv);
   inputDiv.appendChild(input);
   inputDiv.appendChild(rotateBtn);
+  inputDiv.appendChild(directionLabel);
+  inputDiv.appendChild(direction);
   div.appendChild(inputDiv);
   return div;
 }
 
 function renderPregameBoard(container, player) {
+  const direction = document.createElement("p");
   const htmlTable = [];
   let activeShip = document.createElement("p");
   activeShip.style.display = "none";
@@ -164,29 +173,51 @@ function renderPregameBoard(container, player) {
       tableData.innerText = displayText;
       htmlTable[i][j] = tableData;
       tableData.addEventListener("mouseover", () => {
+        if (activeShip.innerText === "") return;
         const length =
           ships.find((ship) => ship.name === activeShip.innerText).length || 0;
         console.log(`mousing over for ${activeShip.innerText}`);
-        if (j + length > 10) {
-          htmlTable[i][j].classList.add("invalid");
-          return;
-        }
-        htmlTable[i][j].classList.add("valid");
-        for (let k = j; k < j + length; k++) {
-          htmlTable[i][k].classList.add("shipPlacementMouseOver");
+        if (direction.innerText === "Left to right") {
+          if (j + length > 10) {
+            htmlTable[i][j].classList.add("invalid");
+            return;
+          }
+          htmlTable[i][j].classList.add("valid");
+          for (let k = j; k < j + length; k++) {
+            htmlTable[i][k].classList.add("shipPlacementMouseOver");
+          }
+        } else if (direction.innerText === "Top to bottom") {
+          if (i + length > 10) {
+            htmlTable[i][j].classList.add("invalid");
+            return;
+          }
+          htmlTable[i][j].classList.add("valid");
+          for (let k = i; k < i + length; k++) {
+            htmlTable[k][j].classList.add("shipPlacementMouseOver");
+          }
         }
       });
       tableData.addEventListener("mouseleave", () => {
+        if (activeShip.innerText === "") return;
         const length =
           ships.find((ship) => ship.name === activeShip.innerText).length || 0;
         console.log(`mousing leave for ${activeShip.innerText}`);
         htmlTable[i][j].classList.remove("invalid");
         htmlTable[i][j].classList.remove("valid");
-        if (j + length > 10) {
-          return;
-        }
-        for (let k = j; k < j + length; k++) {
-          htmlTable[i][k].classList.remove("shipPlacementMouseOver");
+        if (direction.innerText === "Left to right") {
+          if (j + length > 10) {
+            return;
+          }
+          for (let k = j; k < j + length; k++) {
+            htmlTable[i][k].classList.remove("shipPlacementMouseOver");
+          }
+        } else if (direction.innerText === "Top to bottom") {
+          if (i + length > 10) {
+            return;
+          }
+          for (let k = i; k < i + length; k++) {
+            htmlTable[k][j].classList.remove("shipPlacementMouseOver");
+          }
         }
       });
       tableData.addEventListener("mouseup", () => {
@@ -196,7 +227,7 @@ function renderPregameBoard(container, player) {
     }
     table.appendChild(row);
   }
-  container.appendChild(renderShips(player, activeShip, htmlTable));
+  container.appendChild(renderShips(player, activeShip, htmlTable, direction));
   container.appendChild(table);
   return htmlTable;
 }
