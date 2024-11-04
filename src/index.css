@@ -14,7 +14,7 @@ body {
 .message {
   width: 100%;
   text-align: center;
-  padding: .5em;
+  padding: 0.5em;
   font-size: 2em;
 }
 
@@ -28,9 +28,9 @@ table {
   margin: auto;
   border-spacing: 10px;
 }
- 
+
 td {
-  border: 2px solid gray; 
+  border: 2px solid gray;
   min-width: 100px;
   text-align: center;
   user-select: none;
@@ -39,8 +39,19 @@ td {
 
 td:hover {
   cursor: pointer;
-  border: 2px solid lightskyblue;
   scale: 1.1;
+}
+
+.shipPlacementMouseOver {
+  border: 2px solid #00b4ea;
+}
+
+.valid {
+  border: 2px solid lightskyblue;
+}
+
+.invalid {
+  border: 2px solid red;
 }
 
 .boardDiv {
@@ -60,15 +71,15 @@ td:hover {
   background-color: black;
   color: white;
   border: 2px solid white;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   border-radius: 10px;
   cursor: pointer;
   transition: all 250ms;
 }
 
 .selectionBtn:hover {
-  border: 2px solid #00B4EA;
-  color: #00B4EA;
+  border: 2px solid #00b4ea;
+  color: #00b4ea;
   scale: 1.2;
 }
 
@@ -92,7 +103,7 @@ td:hover {
 
 .shipBtn {
   margin: 0 1em;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   border: 2px solid white;
   transition: all 100ms;
   border-radius: 10px;
@@ -100,7 +111,7 @@ td:hover {
 }
 
 .shipBtn:hover {
-  color: #00B4EA;
+  color: #00b4ea;
   transform: translateY(-2px);
 }
 
@@ -113,7 +124,7 @@ td:hover {
   min-width: 280px;
   border: 2px solid white;
   background-color: black;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   font-size: 1.125rem;
   border-radius: 10px;
   outline: none;
@@ -131,14 +142,16 @@ td:hover {
   color: white;
   border: 2px solid white;
   border-radius: 10px;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   font-size: 1rem;
-  transition: transform 250ms, color 100ms;
-  cursor: pointer; 
+  transition:
+    transform 250ms,
+    color 100ms;
+  cursor: pointer;
 }
 
 .rotateBtn:hover {
-  color: #00B4EA;
+  color: #00b4ea;
   transform: rotate(-5deg);
 }
 
