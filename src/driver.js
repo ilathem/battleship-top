@@ -176,9 +176,15 @@ function renderPregameBoard(container, player) {
         if (activeShip.innerText === "") return;
         const length =
           ships.find((ship) => ship.name === activeShip.innerText).length || 0;
-        console.log(`mousing over for ${activeShip.innerText}`);
+        // console.log(`mousing over for ${activeShip.innerText}`);
         if (direction.innerText === "Left to right") {
           if (j + length > 10) {
+            htmlTable[i][j].classList.add("invalid");
+            return;
+          }
+          if (
+            !checkIfSpacesAreClear(i, j, direction.innerText, length, player)
+          ) {
             htmlTable[i][j].classList.add("invalid");
             return;
           }
@@ -188,6 +194,12 @@ function renderPregameBoard(container, player) {
           }
         } else if (direction.innerText === "Top to bottom") {
           if (i + length > 10) {
+            htmlTable[i][j].classList.add("invalid");
+            return;
+          }
+          if (
+            !checkIfSpacesAreClear(i, j, direction.innerText, length, player)
+          ) {
             htmlTable[i][j].classList.add("invalid");
             return;
           }
@@ -201,7 +213,7 @@ function renderPregameBoard(container, player) {
         if (activeShip.innerText === "") return;
         const length =
           ships.find((ship) => ship.name === activeShip.innerText).length || 0;
-        console.log(`mousing leave for ${activeShip.innerText}`);
+        // console.log(`mousing leave for ${activeShip.innerText}`);
         htmlTable[i][j].classList.remove("invalid");
         htmlTable[i][j].classList.remove("valid");
         if (direction.innerText === "Left to right") {
@@ -222,6 +234,26 @@ function renderPregameBoard(container, player) {
       });
       tableData.addEventListener("mouseup", () => {
         console.log(`selected coordinate (${i}, ${j})`);
+        const length =
+          ships.find((ship) => ship.name === activeShip.innerText).length || 0;
+        if (direction.innerText === "Left to right") {
+          if (j + length > 10) return;
+          if (!checkIfSpacesAreClear(i, j, direction.innerText, length, player))
+            return;
+          player.board.placeShip(i, j, i, j + length - 1, activeShip.innerText);
+          for (let k = j; k < j + length; k++) {
+            htmlTable[i][k].classList.add("shipPlacement");
+          }
+        }
+        if (direction.innerText === "Top to bottom") {
+          if (i + length > 10) return;
+          if (!checkIfSpacesAreClear(i, j, direction.innerText, length, player))
+            return;
+          player.board.placeShip(i, j, i + length - 1, j, activeShip.innerText);
+          for (let k = i; k < i + length; k++) {
+            htmlTable[k][j].classList.add("shipPlacement");
+          }
+        }
       });
       row.appendChild(tableData);
     }
@@ -230,6 +262,23 @@ function renderPregameBoard(container, player) {
   container.appendChild(renderShips(player, activeShip, htmlTable, direction));
   container.appendChild(table);
   return htmlTable;
+}
+
+function checkIfSpacesAreClear(startRow, startCol, direction, length, player) {
+  const board = player.board.board;
+  console.log(board);
+  if (direction === "Left to right") {
+    for (let i = startCol; i < startCol + length; i++) {
+      if (board[startRow] && board[startRow][i]) return false;
+    }
+    return true;
+  }
+  if (direction === "Top to bottom") {
+    for (let i = startRow; i < startRow + length; i++) {
+      if (board[startRow] && board[i][startCol]) return false;
+    }
+    return true;
+  }
 }
 
 module.exports = { createTemplateGame, renderGameBoard, renderPregameBoard };

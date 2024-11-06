@@ -1,4 +1,4 @@
-const Ship = require('./ship');
+const Ship = require("./ship");
 
 class Gameboard {
   constructor() {
@@ -6,49 +6,51 @@ class Gameboard {
     this.missedAttacks = [];
   }
 
-  placeShip(startX, startY, endX, endY, shipId = null) {
-    if (startX !== endX && startY !== endY)
-      throw new Error('No diagonal ships');
+  placeShip(startRow, startCol, endRow, endCol, shipId = null) {
+    if (startRow !== endRow && startCol !== endCol)
+      throw new Error("No diagonal ships");
     let orientation = undefined;
-    if (startY === endY) orientation = 'horizontal';
-    if (startX === endX) orientation = 'vertical';
-    let constantCoord = orientation === 'horizontal' ? startY : startX;
+    if (startCol === endCol) orientation = "vertical";
+    if (startRow === endRow) orientation = "horizontal";
+    const constantCoord = orientation === "horizontal" ? startRow : startCol;
     let length = 0;
     let newShip;
-    if (orientation === 'horizontal') {
-      const beginningX = Math.min(startX, endX)
-      const endingX = Math.max(startX, endX)
-      length = endingX - beginningX + 1;
+    console.log(`orientation is ${orientation}`);
+    if (orientation === "horizontal") {
+      const beginningCol = Math.min(startCol, endCol);
+      const endingCol = Math.max(startCol, endCol);
+      length = beginningCol - endingCol + 1;
       newShip = new Ship(length, shipId);
-      for (let i = beginningX; i <= endingX; i++) {
-        this.board[i][constantCoord] = newShip.id;
-      }
-    } else if (orientation === 'vertical') {
-      const beginningY = Math.min(startY, endY)
-      const endingY = Math.max(startY, endY)
-      length = endingY - beginningY + 1;
-      newShip = new Ship(length, shipId);
-      for (let i = beginningY; i <= endingY; i++) {
+      for (let i = beginningCol; i <= endingCol; i++) {
         this.board[constantCoord][i] = newShip.id;
       }
+    } else if (orientation === "vertical") {
+      const beginningRow = Math.min(startRow, endRow);
+      const endingRow = Math.max(startRow, endRow);
+      length = endingRow - beginningRow + 1;
+      newShip = new Ship(length, shipId);
+      for (let i = beginningRow; i <= endingRow; i++) {
+        this.board[i][constantCoord] = newShip.id;
+      }
     }
-    this.ships = { ...this.ships, [newShip.id]: newShip }
-    // this.ships.push(newShip)
+    console.log(this.board);
+    this.ships = { ...this.ships, [newShip.id]: newShip };
     return newShip;
   }
 
-
   receiveAttack(x, y) {
     const destination = this.board[x][y];
-    if (destination && destination !== 'X') {
+    if (destination && destination !== "X") {
       this.ships[destination].hit();
-      this.board[x][y] = 'X';
-      console.log(`attack (${x}, ${y}): ${destination} hit (length is ${this.ships[destination].length}), total hit count is ${this.ships[destination].hitCount}`);
-      return 'Hit!'
+      this.board[x][y] = "X";
+      console.log(
+        `attack (${x}, ${y}): ${destination} hit (length is ${this.ships[destination].length}), total hit count is ${this.ships[destination].hitCount}`,
+      );
+      return "Hit!";
     }
-    this.board[x][y] = 'O';
+    this.board[x][y] = "O";
     this.missedAttacks.push([x, y]);
-    return 'Miss!';
+    return "Miss!";
   }
 
   allSunk() {
