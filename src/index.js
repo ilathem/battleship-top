@@ -26,7 +26,7 @@ let currentBoardIndex = 1;
 function showEndGameScreen() {
   boardDiv.innerHTML = "";
 
-  msg.innerText = `Player ${currentPlayerIndex + 1} Wins!`;
+  msg.innerText = `Player ${currentPlayerIndex + 1} Wins!\nReload to start a new game`;
 }
 
 function triggerNextTurn(firstTurn) {

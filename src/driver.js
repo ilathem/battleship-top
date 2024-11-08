@@ -31,8 +31,9 @@ function renderGameBoard(container, player, triggerNextTurn, msg) {
     for (let j = 0; j < player.board.board[i].length; j++) {
       const tableData = document.createElement("td");
       let displayText = player.board.board[i][j] || "-";
-      // if (['X', 'O'].includes(player.board.board[i][j])) displayText = player.board.board[i][j];
-      // else displayText = '-'
+      if (["X", "O"].includes(player.board.board[i][j]))
+        displayText = player.board.board[i][j];
+      else displayText = "-";
       tableData.innerText = displayText;
       htmlTable[i][j] = tableData;
       tableData.addEventListener("click", () => {
@@ -46,7 +47,7 @@ function renderGameBoard(container, player, triggerNextTurn, msg) {
         // console.log(result);
         tableData.innerText = player.board.board[i][j];
         msg.innerText = result;
-        setTimeout(triggerNextTurn, 100);
+        setTimeout(triggerNextTurn, 500);
       });
       row.appendChild(tableData);
     }
