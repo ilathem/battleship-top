@@ -149,7 +149,7 @@ function renderShips(player, activeShip, htmlTable, direction) {
   });
   div.appendChild(p);
   div.appendChild(shipsDiv);
-  inputDiv.appendChild(input);
+  // inputDiv.appendChild(input);
   inputDiv.appendChild(rotateBtn);
   inputDiv.appendChild(directionLabel);
   inputDiv.appendChild(direction);
@@ -157,7 +157,7 @@ function renderShips(player, activeShip, htmlTable, direction) {
   return div;
 }
 
-function renderPregameBoard(container, player) {
+function renderPregameBoard(container, player, nextFunc) {
   const direction = document.createElement("p");
   const htmlTable = [];
   let activeShip = document.createElement("p");
@@ -248,6 +248,7 @@ function renderPregameBoard(container, player) {
           player.board.placeShip(i, j, i, j + length - 1, activeShip.innerText);
           for (let k = j; k < j + length; k++) {
             htmlTable[i][k].classList.add("shipPlacement");
+            htmlTable[i][k].innerText = activeShip.innerText.charAt(0);
           }
         }
         if (direction.innerText === "Top to bottom") {
@@ -257,7 +258,13 @@ function renderPregameBoard(container, player) {
           player.board.placeShip(i, j, i + length - 1, j, activeShip.innerText);
           for (let k = i; k < i + length; k++) {
             htmlTable[k][j].classList.add("shipPlacement");
+            htmlTable[i][k].innerText = activeShip.innerText.charAt(0);
           }
+        }
+        if (Object.keys(player.board.ships).length === 5) {
+          console.log("all ships have been placed");
+          container.innerHTML = "";
+          nextFunc();
         }
       });
       row.appendChild(tableData);

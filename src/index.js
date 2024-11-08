@@ -1,7 +1,7 @@
 const {
-    createTemplateGame,
-    renderGameBoard,
-    renderPregameBoard,
+  createTemplateGame,
+  renderGameBoard,
+  renderPregameBoard,
 } = require("./driver.js");
 import "./index.css";
 const { player1, player2 } = createTemplateGame();
@@ -12,8 +12,8 @@ msg.classList.add("message");
 let sampleArray = ["a", "b", "c"];
 let sampleIndex = 0;
 msg.addEventListener("click", () => {
-    sampleIndex = (sampleIndex + 1) % sampleArray.length;
-    // console.log(sampleIndex)
+  sampleIndex = (sampleIndex + 1) % sampleArray.length;
+  // console.log(sampleIndex)
 });
 boardDiv.classList.add("boardDiv");
 body.appendChild(msg);
@@ -24,70 +24,71 @@ let currentPlayerIndex = 0;
 let currentBoardIndex = 1;
 
 function showEndGameScreen() {
-    boardDiv.innerHTML = "";
+  boardDiv.innerHTML = "";
 
-    msg.innerText = `Player ${currentPlayerIndex + 1} Wins!`;
+  msg.innerText = `Player ${currentPlayerIndex + 1} Wins!`;
 }
 
 function triggerNextTurn(firstTurn) {
+  console.log(
+    `calling triggerNextTurn from player ${currentPlayerIndex}, board ${currentBoardIndex}`,
+  );
+  console.log(players[currentBoardIndex].board.allSunk());
+  if (players[currentBoardIndex].board.allSunk()) {
     console.log(
-        `calling triggerNextTurn from player ${currentPlayerIndex}, board ${currentBoardIndex}`,
+      `all ships sunk for board ${currentBoardIndex}, player ${currentPlayerIndex} should win`,
     );
-    console.log(players[currentBoardIndex].board.allSunk());
-    if (players[currentBoardIndex].board.allSunk()) {
-        console.log(
-            `all ships sunk for board ${currentBoardIndex}, player ${currentPlayerIndex} should win`,
-        );
 
-        showEndGameScreen();
-    } else {
-        boardDiv.innerHTML = "";
+    showEndGameScreen();
+  } else {
+    boardDiv.innerHTML = "";
 
-        if (!firstTurn) {
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-            currentBoardIndex = (currentBoardIndex + 1) % players.length;
-        }
-
-        msg.innerText = `Player ${currentPlayerIndex + 1} Turn`;
-
-        console.log(
-            `triggering board for player ${currentPlayerIndex}, board ${currentBoardIndex}`,
-        );
-        renderGameBoard(boardDiv, players[currentBoardIndex], triggerNextTurn, msg);
+    if (!firstTurn) {
+      currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+      currentBoardIndex = (currentBoardIndex + 1) % players.length;
     }
+
+    msg.innerText = `Player ${currentPlayerIndex + 1} Turn`;
+
+    console.log(
+      `triggering board for player ${currentPlayerIndex}, board ${currentBoardIndex}`,
+    );
+    renderGameBoard(boardDiv, players[currentBoardIndex], triggerNextTurn, msg);
+  }
 }
 
 function showTitleScreen() {
-    msg.innerText = "Battleship";
-    const selectionText = document.createElement("p");
-    selectionText.classList.add("selectionText");
-    selectionText.innerText = "Playing against player or computer?";
-    const computerGameBtn = document.createElement("button");
-    computerGameBtn.innerText = "Computer";
-    computerGameBtn.classList.add("selectionBtn");
-    const playerGameBtn = document.createElement("button");
-    playerGameBtn.innerText = "Player";
-    playerGameBtn.classList.add("selectionBtn");
-    playerGameBtn.addEventListener("mouseup", () => {
-        startPlayerPreGame();
-    });
-    boardDiv.appendChild(selectionText);
-    boardDiv.appendChild(computerGameBtn);
-    boardDiv.appendChild(playerGameBtn);
+  msg.innerText = "Battleship";
+  const selectionText = document.createElement("p");
+  selectionText.classList.add("selectionText");
+  selectionText.innerText = "Playing against player or computer?";
+  const computerGameBtn = document.createElement("button");
+  computerGameBtn.innerText = "Computer";
+  computerGameBtn.classList.add("selectionBtn");
+  const playerGameBtn = document.createElement("button");
+  playerGameBtn.innerText = "Player";
+  playerGameBtn.classList.add("selectionBtn");
+  playerGameBtn.addEventListener("mouseup", () => {
+    startPlayerPreGame();
+  });
+  boardDiv.appendChild(selectionText);
+  boardDiv.appendChild(computerGameBtn);
+  boardDiv.appendChild(playerGameBtn);
 }
 
 function startPlayerPreGame() {
-    boardDiv.innerHTML = "";
-    placePlayerOneShips();
+  boardDiv.innerHTML = "";
+  placePlayerOneShips();
 }
 
 function placePlayerOneShips() {
-    msg.innerText = `Player 1, place your ships...`;
-    renderPregameBoard(boardDiv, players[0]);
+  msg.innerText = `Player 1, place your ships...`;
+  renderPregameBoard(boardDiv, players[0], placePlayerTwoShips);
 }
 
 function placePlayerTwoShips() {
-    msg.innerText = "Player 2, place your ships...";
+  msg.innerText = "Player 2, place your ships...";
+  renderPregameBoard(boardDiv, players[1], () => triggerNextTurn(true));
 }
 
 showTitleScreen();
