@@ -14,14 +14,20 @@ function populateWithPredeterminedCoordinates(player) {
 }
 
 function createTemplateGame() {
-  const player1 = new Player("real");
-  const player2 = new Player("real");
+  const player1 = new Player("player1");
+  const player2 = new Player("player2");
   // populateWithPredeterminedCoordinates(player1);
   // populateWithPredeterminedCoordinates(player2);
   return { player1, player2 };
 }
 
-function renderGameBoard(container, player, triggerNextTurn, msg) {
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function renderGameBoard(container, player, triggerNextTurn, msg, isCpuTurn) {
   // console.log(player.board);
   const htmlTable = [];
   const table = document.createElement("table");
@@ -37,6 +43,7 @@ function renderGameBoard(container, player, triggerNextTurn, msg) {
       tableData.innerText = displayText;
       htmlTable[i][j] = tableData;
       tableData.addEventListener("click", () => {
+        if (isCpuTurn) return;
         if (["X", "O"].includes(player.board.board[i][j])) {
           // console.log('this has already been attacked');
           return;
@@ -54,6 +61,21 @@ function renderGameBoard(container, player, triggerNextTurn, msg) {
     table.appendChild(row);
   }
   container.appendChild(table);
+  if (isCpuTurn) {
+    setTimeout(() => {
+      let row = getRandomInt(0, 9);
+      let col = getRandomInt(0, 9);
+      while (["X", "O"].includes(player.board.board[row][col])) {
+        row = getRandomInt(0, 9);
+        col = getRandomInt(0, 9);
+      }
+      console.log(`cpu attacking ${row}${col}`);
+      const result = player.board.receiveAttack(row, col);
+      htmlTable[row][col].innerText = player.board.board[row][col];
+      msg.innerText = result;
+      setTimeout(triggerNextTurn, 1000);
+    }, 500);
+  }
   return htmlTable;
 }
 
@@ -262,7 +284,7 @@ function renderPregameBoard(container, player, nextFunc) {
             htmlTable[i][k].innerText = activeShip.innerText.charAt(0);
           }
         }
-        if (Object.keys(player.board.ships).length === 5) {
+        if (Object.keys(player.board.ships).length === 1) {
           console.log("all ships have been placed");
           container.innerHTML = "";
           nextFunc();
@@ -294,4 +316,9 @@ function checkIfSpacesAreClear(startRow, startCol, direction, length, player) {
   }
 }
 
-module.exports = { createTemplateGame, renderGameBoard, renderPregameBoard };
+module.exports = {
+  createTemplateGame,
+  renderGameBoard,
+  renderPregameBoard,
+  populateWithPredeterminedCoordinates,
+};

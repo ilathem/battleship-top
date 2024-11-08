@@ -2,6 +2,7 @@ const {
   createTemplateGame,
   renderGameBoard,
   renderPregameBoard,
+  populateWithPredeterminedCoordinates,
 } = require("./driver.js");
 import "./index.css";
 const { player1, player2 } = createTemplateGame();
@@ -9,16 +10,10 @@ const body = document.querySelector("body");
 const boardDiv = document.createElement("div");
 const msg = document.createElement("p");
 msg.classList.add("message");
-let sampleArray = ["a", "b", "c"];
-let sampleIndex = 0;
-msg.addEventListener("click", () => {
-  sampleIndex = (sampleIndex + 1) % sampleArray.length;
-  // console.log(sampleIndex)
-});
 boardDiv.classList.add("boardDiv");
 body.appendChild(msg);
 body.appendChild(boardDiv);
-
+let isCpuGame = false;
 const players = [player1, player2];
 let currentPlayerIndex = 0;
 let currentBoardIndex = 1;
@@ -47,13 +42,17 @@ function triggerNextTurn(firstTurn) {
       currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
       currentBoardIndex = (currentBoardIndex + 1) % players.length;
     }
-
     msg.innerText = `Player ${currentPlayerIndex + 1} Turn`;
-
     console.log(
       `triggering board for player ${currentPlayerIndex}, board ${currentBoardIndex}`,
     );
-    renderGameBoard(boardDiv, players[currentBoardIndex], triggerNextTurn, msg);
+    renderGameBoard(
+      boardDiv,
+      players[currentBoardIndex],
+      triggerNextTurn,
+      msg,
+      isCpuGame && currentPlayerIndex === 1,
+    );
   }
 }
 
@@ -65,6 +64,9 @@ function showTitleScreen() {
   const computerGameBtn = document.createElement("button");
   computerGameBtn.innerText = "Computer";
   computerGameBtn.classList.add("selectionBtn");
+  computerGameBtn.addEventListener("mouseup", () => {
+    startComputerPreGame();
+  });
   const playerGameBtn = document.createElement("button");
   playerGameBtn.innerText = "Player";
   playerGameBtn.classList.add("selectionBtn");
@@ -74,6 +76,23 @@ function showTitleScreen() {
   boardDiv.appendChild(selectionText);
   boardDiv.appendChild(computerGameBtn);
   boardDiv.appendChild(playerGameBtn);
+}
+
+function startComputerPreGame() {
+  isCpuGame = true;
+  boardDiv.innerHTML = "";
+  placePlayerShips();
+}
+
+function placePlayerShips() {
+  msg.innerText = `Player, place your ships...`;
+  renderPregameBoard(boardDiv, players[0], placeComputerShips);
+}
+
+function placeComputerShips() {
+  boardDiv.innerHTML = "";
+  populateWithPredeterminedCoordinates(players[1]);
+  triggerNextTurn(true);
 }
 
 function startPlayerPreGame() {
