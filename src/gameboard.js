@@ -19,7 +19,7 @@ class Gameboard {
     if (orientation === "horizontal") {
       const beginningCol = Math.min(startCol, endCol);
       const endingCol = Math.max(startCol, endCol);
-      length = beginningCol - endingCol + 1;
+      length = endingCol - beginningCol + 1;
       newShip = new Ship(length, shipId);
       for (let i = beginningCol; i <= endingCol; i++) {
         this.board[constantCoord][i] = newShip.id;
