@@ -240,6 +240,11 @@ function renderPregameBoard(container, player) {
           if (j + length > 10) return;
           if (!checkIfSpacesAreClear(i, j, direction.innerText, length, player))
             return;
+          let shipAlreadyPlaced = false;
+          console.log(player.board.ships);
+          if (player.board.ships && player.board.ships[activeShip.innerText])
+            shipAlreadyPlaced = true;
+          if (shipAlreadyPlaced) return;
           player.board.placeShip(i, j, i, j + length - 1, activeShip.innerText);
           for (let k = j; k < j + length; k++) {
             htmlTable[i][k].classList.add("shipPlacement");
