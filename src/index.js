@@ -52,6 +52,7 @@ function triggerNextTurn(firstTurn) {
       triggerNextTurn,
       msg,
       isCpuGame && currentPlayerIndex === 1,
+      players[currentPlayerIndex],
     );
   }
 }

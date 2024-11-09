@@ -27,32 +27,76 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function renderGameBoard(container, player, triggerNextTurn, msg, isCpuTurn) {
-  // console.log(player.board);
+function showMiniBoard(htmlParent, board) {
   const htmlTable = [];
   const table = document.createElement("table");
-  for (let i = 0; i < player.board.board.length; i++) {
+  table.classList.add("miniBoardTable");
+  for (let i = 0; i < board.length; i++) {
     const row = document.createElement("tr");
-    htmlTable[i] = new Array(player.board.board[i].length);
-    for (let j = 0; j < player.board.board[i].length; j++) {
+    htmlTable[i] = new Array(board[i].length);
+    for (let j = 0; j < board[i].length; j++) {
       const tableData = document.createElement("td");
-      let displayText = player.board.board[i][j] || "-";
-      if (["X", "O"].includes(player.board.board[i][j]))
-        displayText = player.board.board[i][j];
+      tableData.classList.add("miniTd");
+      let displayText = (board[i][j] && board[i][j].charAt(0)) || "-";
+      // if (["X", "O"].includes(board[i][j]))
+      //   displayText = board[i][j];
+      // else displayText = "-";
+      tableData.innerText = displayText;
+      htmlTable[i][j] = tableData;
+      row.appendChild(tableData);
+    }
+    table.appendChild(row);
+  }
+  htmlParent.appendChild(table);
+}
+
+function hideMiniBoard(htmlParent) {
+  htmlParent.removeChild(htmlParent.lastChild);
+}
+
+function renderGameBoard(
+  container,
+  opponent,
+  triggerNextTurn,
+  msg,
+  isCpuTurn,
+  player,
+) {
+  // console.log(player.board);
+  const peekMyBoardBtn = document.createElement("button");
+  peekMyBoardBtn.innerText = "Peek my board";
+  peekMyBoardBtn.classList.add("peekBoard");
+  peekMyBoardBtn.addEventListener("mousedown", () => {
+    showMiniBoard(peekMyBoardBtn, player.board.board);
+  });
+  peekMyBoardBtn.addEventListener("mouseup", () => {
+    hideMiniBoard(peekMyBoardBtn);
+  });
+  container.appendChild(peekMyBoardBtn);
+  const htmlTable = [];
+  const table = document.createElement("table");
+  for (let i = 0; i < opponent.board.board.length; i++) {
+    const row = document.createElement("tr");
+    htmlTable[i] = new Array(opponent.board.board[i].length);
+    for (let j = 0; j < opponent.board.board[i].length; j++) {
+      const tableData = document.createElement("td");
+      let displayText = opponent.board.board[i][j] || "-";
+      if (["X", "O"].includes(opponent.board.board[i][j]))
+        displayText = opponent.board.board[i][j];
       else displayText = "-";
       tableData.innerText = displayText;
       htmlTable[i][j] = tableData;
       tableData.addEventListener("click", () => {
         if (isCpuTurn) return;
-        if (["X", "O"].includes(player.board.board[i][j])) {
+        if (["X", "O"].includes(opponent.board.board[i][j])) {
           // console.log('this has already been attacked');
           return;
         }
         // console.log(`attack on ${i}, ${j}`)
         // console.log(player.board.board[i][j] || 'just empty water')
-        const result = player.board.receiveAttack(i, j);
+        const result = opponent.board.receiveAttack(i, j);
         // console.log(result);
-        tableData.innerText = player.board.board[i][j];
+        tableData.innerText = opponent.board.board[i][j];
         msg.innerText = result;
         setTimeout(triggerNextTurn, 500);
       });
@@ -65,13 +109,13 @@ function renderGameBoard(container, player, triggerNextTurn, msg, isCpuTurn) {
     setTimeout(() => {
       let row = getRandomInt(0, 9);
       let col = getRandomInt(0, 9);
-      while (["X", "O"].includes(player.board.board[row][col])) {
+      while (["X", "O"].includes(opponent.board.board[row][col])) {
         row = getRandomInt(0, 9);
         col = getRandomInt(0, 9);
       }
       console.log(`cpu attacking ${row}${col}`);
-      const result = player.board.receiveAttack(row, col);
-      htmlTable[row][col].innerText = player.board.board[row][col];
+      const result = opponent.board.receiveAttack(row, col);
+      htmlTable[row][col].innerText = opponent.board.board[row][col];
       msg.innerText = result;
       setTimeout(triggerNextTurn, 1000);
     }, 500);
@@ -257,6 +301,7 @@ function renderPregameBoard(container, player, nextFunc) {
       });
       tableData.addEventListener("mouseup", () => {
         console.log(`selected coordinate (${i}, ${j})`);
+        if (!activeShip.innerText) return;
         const length =
           ships.find((ship) => ship.name === activeShip.innerText).length || 0;
         if (direction.innerText === "Left to right") {
