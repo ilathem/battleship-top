@@ -329,7 +329,7 @@ function renderPregameBoard(container, player, nextFunc) {
             htmlTable[i][k].innerText = activeShip.innerText.charAt(0);
           }
         }
-        if (Object.keys(player.board.ships).length === 1) {
+        if (Object.keys(player.board.ships).length === 5) {
           console.log("all ships have been placed");
           container.innerHTML = "";
           nextFunc();
